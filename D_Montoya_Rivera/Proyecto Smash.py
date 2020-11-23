@@ -6,11 +6,27 @@ from threading import Thread
 from tkinter import messagebox
 import random
 
+import player1Controles
+import player2Controles
+import player3Controles
+import player4Controles
+"""
+from player2Controles import *
+from player3Controles import *
+"""
 
 class General: #La clase contiene todas las interfaces presentes en el menu, con sus respectivos botones.
 
     global CoordBullet, CoordSlayer, CoordEnemy,coordMisil, coordAplasta, Misil, Aplasta, Vivo, AplastaBullet, SCORE, Tiempo,  PlayOrNot, Hp, Salto, Derecha, Izquierda, Disparo   #Variables globales correspondientes a las coordenadas de los objetos del juego
+    global player1, player2, player3, player4
 
+    player1 = player1Controles.Controles()
+    player2 = player2Controles.Controles()
+    player3 = player3Controles.Controles()
+    player4 = player4Controles.Controles()
+    
+    
+    
 
     Hp = 3
     
@@ -94,81 +110,150 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
     
     def playSmash():
 
+        global Gamers
+
         C_Play = Canvas(WindGame, width = 1500 , height = 800, bg = 'green')
         C_Play.place(x=0, y=0)
 
         C_Play.image1 = General.cargarImg2('InterfazMenu.png') #Background
         imgCanvas = C_Play.create_image(0,0, anchor = NW , image =C_Play.image1)
-        
-        Lb_Nombre = Label(C_Play, text= 'Nickname', bg ='Black', fg = 'Yellow', font =("Goudy Stout", 13), height = 2, width = 10 )
-        Lb_Nombre.place(x=700, y = 100)
-        
-        En_Nombre = Entry(C_Play)
-        En_Nombre.place(x = 745, y = 150)
 
-        En_IP = Entry(C_Play, width = 25)
-        En_IP.place_forget()
+        #Labels de los jugadores
         
-        btn_Go1 = Button(C_Play, text = 'Create Server', bg = 'black', fg = 'Yellow', height = 1, width = 13, command = lambda:Play_aux_host(C_Play, (En_Nombre.get()).strip()), font =("Goudy Stout", 13))
-        btn_Go1.place(x = 400, y = 400)
+        Lb_Nombre1 = Label(C_Play, text= 'Player 1 Name', bg ='Black', fg = 'Yellow', font =("Goudy Stout", 13), height = 1, width = 13 )
+        Lb_Nombre1.place_forget()
+        
+        Lb_Nombre2 = Label(C_Play, text= 'Player 2 Name', bg ='Black', fg = 'Yellow', font =("Goudy Stout", 13), height = 1, width = 13 )
+        Lb_Nombre2.place_forget()
+        
+        Lb_Nombre3 = Label(C_Play, text= 'Player 3 Name', bg ='Black', fg = 'Yellow', font =("Goudy Stout", 13), height = 1, width = 13 )
+        Lb_Nombre3.place_forget()
 
-        btn_Go2 = Button(C_Play, text = 'Join Server', bg = 'black', fg = 'Yellow', height = 1, width = 13, command = lambda:Play_aux_join(C_Play, (En_Nombre.get()).strip()), font =("Goudy Stout", 13))
-        btn_Go2.place(x = 950, y = 400)
+        Lb_Nombre4 = Label(C_Play, text= 'Player 4 Name', bg ='Black', fg = 'Yellow', font =("Goudy Stout", 13), height = 1, width = 13 )
+        Lb_Nombre4.place_forget()
+
+        #Entradas de los nombres de los jugadores
+        
+        En_Nombre1 = Entry(C_Play)
+        En_Nombre1.place_forget()
+        
+        En_Nombre2 = Entry(C_Play)
+        En_Nombre2.place_forget()
+        
+        En_Nombre3 = Entry(C_Play)
+        En_Nombre3.place_forget()
+
+        En_Nombre4 = Entry(C_Play)
+        En_Nombre4.place_forget()
+
+
+        #Botones de selección de jugadores, ingreso al juego y retroceso
+        
+        btn_Go1 = Button(C_Play, text = '2 Players', bg = 'black', fg = 'Yellow', height = 1, width = 13, command = lambda:Play_aux(C_Play,2), font =("Goudy Stout", 13))
+        btn_Go1.place(x = 200, y = 400)
+
+        btn_Go2 = Button(C_Play, text = '3 Players', bg = 'black', fg = 'Yellow', height = 1, width = 13, command = lambda:Play_aux(C_Play,3), font =("Goudy Stout", 13))
+        btn_Go2.place(x = 600, y = 400)
+
+        btn_Go3 = Button(C_Play, text = '4 Players', bg = 'black', fg = 'Yellow', height = 1, width = 13, command = lambda:Play_aux(C_Play,4), font =("Goudy Stout", 13))
+        btn_Go3.place(x = 1000, y = 400)
         
         btn_Return = Button(C_Play, text = 'Return', bg = 'black', fg = 'Yellow', height = 1, width = 13, command = lambda:General.Menu(), font =("Goudy Stout", 13)) # Regresa al menu Principal
         btn_Return.place(x = 1200, y = 700 )
+
+        btn_Play = Button(C_Play, text = 'Lets play!', bg = 'black', fg = 'Yellow', height = 1, width = 13, command = lambda:ValidaTexto(En_Nombre1.get().strip(),En_Nombre2.get().strip(),En_Nombre3.get().strip(),En_Nombre4.get().strip(), Gamers), font =("Goudy Stout", 13))
+        btn_Play.place_forget()
         
-        btn_Play = Button(C_Play, text = 'Lets go dude!', bg = 'black', fg = 'Yellow', height = 1, width = 13,font =("Goudy Stout", 13))
+        
+
+
+
+        #Labels de error
 
         lb_Error = Label(C_Play, text= 'El nombre no puede estar vacío', bg ='Black', fg = 'Red', font ="Arial 13")
+        lb_Error.place_forget()
 
         lb_Error2 = Label(C_Play, text= 'El nombre no debe exeder la cantidad de caracteres máximos (11)', bg ='Black', fg = 'Red', font ="Arial 13")
+        lb_Error2.place_forget()
         
-        lb_Error3 = Label(C_Play, text= 'IP del servidor no válida', bg ='Black', fg = 'Red', font ="Arial 13")
-        lb_Error3.place_forget()
 
-        lb_IP =  Label(C_Play, text= 'Ingrese la dirección IP', bg ='Black', fg = 'Yellow', font =("Goudy Stout", 13), height = 2, width = 20)
-        lb_IP.place_forget()
         
-        def Play_aux_host(C_Play, Texto): #La función se encarga de la creación del servidor
-            if not Texto:
-                lb_Error2.place_forget()
-                lb_Error.place(x=745, y = 180)
-            elif len(Texto) > 11:
-                lb_Error.place_forget()
-                lb_Error2.place(x=550, y = 180)
-            else:
-                lb_Error2.place_forget()
-                lb_Error.place_forget()
-                General.InterfazJuego(Texto, 0.5)
-        
-        def Play_aux_join(C_Play, Texto): #La funcion evalúa que no se ingrese un nombre en blanco, eso incluye espacios vacíos
-            if not Texto:
-                lb_Error2.place_forget()
-                lb_Error.place(x=745, y = 180)
-            elif len(Texto) > 11:
-                lb_Error.place_forget()
-                lb_Error2.place(x=550, y = 180)
-            else:
-                lb_Error2.place_forget()
-                lb_Error.place_forget()
-                btn_Go2.place_forget()
-                btn_Go1.place_forget()
-                En_Nombre.place_forget()
-                Lb_Nombre.place_forget()
-                lb_IP.place(x = 100, y = 150)
-                En_IP.place(x = 530, y = 165)
-                btn_Play = Button(C_Play, text = 'Lets go dude!', bg = 'black', fg = 'Yellow', height = 1,command = lambda: ValidaIP(En_IP.get().strip()), width = 13,font =("Goudy Stout", 13))
-                btn_Play.place(x = 550, y = 600)
 
-                def ValidaIP(Texto):
-                    if not En_IP.get().strip():
-                        lb_Error3.place(x = 530, y = 100)
-                    else:
-                        print("FUNCA")
-                        #General.InterfazJuego(Texto, 0.5)
+
+
+        def Play_aux(C_Play,Jugadores):
+            global Gamers
+            Gamers = Jugadores
+
+            btn_Play.place(x=1200, y = 500)
+            btn_Go1.place_forget()
+            btn_Go2.place_forget()
+            btn_Go3.place_forget()
 
                 
+            Lb_Nombre1.place(x=100, y = 100)
+            En_Nombre1.place(x = 420, y = 105)
+
+            Lb_Nombre2.place(x=100, y = 300)
+            En_Nombre2.place(x =420, y = 305)
+
+            if Jugadores == 3:
+                
+                Lb_Nombre3.place(x=100, y = 500)
+                En_Nombre3.place(x=420, y = 505)
+
+            elif Jugadores == 4:
+
+                Lb_Nombre3.place(x=100, y = 500)
+                En_Nombre3.place(x=420, y = 505)
+
+                Lb_Nombre4.place(x=100, y = 700)
+                En_Nombre4.place(x=420, y = 705)
+
+                
+
+
+        def ValidaTexto(Jugador1, Jugador2, Jugador3,Jugador4, Jugadores):
+
+            if Jugadores == 2:
+                if not Jugador1 or not Jugador2:
+                    MuestraErrores(1)
+                elif len(Jugador1) > 11 or len(Jugador2) > 11 :
+                    MuestraErrores(2)
+                else:
+                    EscondeErrores()
+                    print("Funca 2")
+            elif Jugadores == 3:
+                if not Jugador1 or not Jugador2 or not Jugador3:
+                    MuestraErrores(1)
+                elif (len(Jugador1) > 11 or len(Jugador2) > 11 or len(Jugador3) > 11):
+                    MuestraErrores(2)
+                else:
+                    EscondeErrores()
+                    print("Funca 3")
+            elif Jugadores == 4:
+                if not Jugador1 or not Jugador2 or not Jugador3 or not Jugador4:
+                    MuestraErrores(1)
+                elif (len(Jugador1) > 11 or len(Jugador2) > 11 or len(Jugador3) > 11 or len(Jugador4) > 11):
+                    MuestraErrores(2)
+                else:
+                    EscondeErrores()
+                    print("Funca 4")
+
+        def MuestraErrores(Num):
+
+            if Num == 1:
+                lb_Error2.place_forget()
+                lb_Error.place(x=745, y = 180)
+            else:
+                lb_Error.place_forget()
+                lb_Error2.place(x=550, y = 180)
+
+        def EscondeErrores():
+            lb_Error2.place_forget()
+            lb_Error.place_forget()
+                
+                         
         
         #End Play
 
@@ -206,13 +291,15 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
         
     def Help(): #La funcion muestra los controles y el objetivo del juego
 
-        global Salto, Derecha, Izquierda, Disparo
+        global Salto, Derecha, Izquierda, Disparo, player
         
         C_Help = Canvas(WindGame, width = 1500 , height = 800, bg = 'green')
         C_Help.place(x=0,y=0)
         
         C_Help.image1 = General.cargarImg2('InterfazMenu.png')#Background 
         imgCanvas = C_Help.create_image(0,0, anchor = NW , image =C_Help.image1)
+
+        player = 0
 
 
         
@@ -238,15 +325,15 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
         en_Salto = Entry(C_Help)
         en_Salto.place_forget()
 
-        #Disparo
-        lb_Disparo = Label(C_Help, text = 'DISPARO:' , bg = 'White', fg = 'black', font = "Arial 12")
-        lb_Disparo.place_forget()
+        #Efecto
+        lb_Efecto = Label(C_Help, text = 'EFECTO:' , bg = 'White', fg = 'black', font = "Arial 12")
+        lb_Efecto.place_forget()
         
-        lb_TeclaDisparo = Label(C_Help, text = Disparo , bg = 'White', fg = 'black', font = "Arial 12")
-        lb_TeclaDisparo.place_forget()
+        lb_TeclaEfecto = Label(C_Help, text = Disparo , bg = 'White', fg = 'black', font = "Arial 12")
+        lb_TeclaEfecto.place_forget()
 
-        en_Disparo = Entry(C_Help)
-        en_Disparo.place_forget()
+        en_Efecto = Entry(C_Help)
+        en_Efecto.place_forget()
 
         #Mover izquierda
         lb_MoverIzq = Label(C_Help, text = 'MOVIMIENTO IZQUIERDA:' , bg = 'White', fg = 'black', font = "Arial 12")
@@ -268,45 +355,51 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
         en_MoverDer = Entry(C_Help)
         en_MoverDer.place_forget()
 
+        #Labels de error
         lB_ErrorInput =  Label(C_Help, text= 'La entrada no puede estar vacía | Las teclas NO pueden ser las mismas | Solo puede ser 1 caracter', bg ='Black', fg = 'Red', font ="Arial 16")
         
         
         #Botones de la interfaz de ayuda
         
-        btn_Change = Button(C_Help, text = 'Save Changes', bg = 'black', fg = 'Yellow', height = 1, width = 13, font =("Goudy Stout", 13),command = lambda: CambioControles((en_Disparo.get()).upper(), (en_MoverIzq.get()).upper(), (en_Salto.get()).upper(), (en_MoverDer.get().upper()))) #Se encarga de cambiar los contrles 
-        btn_Change.place_forget()
+        btn_Change = Button(C_Help, text = 'Save Changes', bg = 'black', fg = 'Yellow', height = 1, width = 13, font =("Goudy Stout", 13),command = lambda: CambioControles((en_Efecto.get()).upper(), (en_MoverIzq.get()).upper(),(en_MoverDer.get()).upper() , (en_Salto.get()).upper())) #Se encarga de cambiar los contrles 
+        btn_Change.place_forget()                                                                                                                       #def CambioControles(Efect, Left, Right, Jump): #Evalúa que la edición de teclas sea correcta
+
+        btn_Player1 = Button(C_Help, text = 'Jugador 1', bg = 'black', fg = 'Yellow', height = 1, width = 13, font =("Goudy Stout", 13),command = lambda:(SetVisibleControles(),
+                                                                                                                                                          lb_Ayuda.place_forget(),
+                                                                                                                                                          MuestraControles(player1.efecto,player1.izquierda,player1.derecha,player1.salto,1))) #Se encarga de cambiar los contrles 
+        btn_Player1.place_forget()
+                                                                                                                                                        
+        btn_Player2 = Button(C_Help, text = 'Jugador 2', bg = 'black', fg = 'Yellow', height = 1, width = 13, font =("Goudy Stout", 13),command = lambda: (SetVisibleControles(),
+                                                                                                                                                          lb_Ayuda.place_forget(),
+                                                                                                                                                          MuestraControles(player2.efecto,player2.izquierda,player2.derecha,player2.salto,2))) #Se encarga de cambiar los contrles 
+        btn_Player2.place_forget()
+
+        btn_Player3 = Button(C_Help, text = 'Jugador 3', bg = 'black', fg = 'Yellow', height = 1, width = 13, font =("Goudy Stout", 13),command = lambda: (SetVisibleControles(),
+                                                                                                                                                          lb_Ayuda.place_forget(),
+                                                                                                                                                          MuestraControles(player3.efecto,player3.izquierda,player3.derecha,player3.salto,3))) #Se encarga de cambiar los contrles 
+        btn_Player3.place_forget()
+
+        btn_Player4 = Button(C_Help, text = 'Jugador 4', bg = 'black', fg = 'Yellow', height = 1, width = 13, font =("Goudy Stout", 13),command = lambda: (SetVisibleControles(),
+                                                                                                                                                          lb_Ayuda.place_forget(),
+                                                                                                                                                          MuestraControles(player4.efecto,player4.izquierda,player4.derecha,player4.salto,4))) #Se encarga de cambiar los contrles 
+        btn_Player4.place_forget()
+        
 
         
-        btn_Controles = Button(C_Help, text = 'Controles', bg = 'black', fg = 'Yellow', height = 1, width = 13, command = lambda:(lb_Salto.place(x = 10, y = 100),
-                                                                                                                                  lb_TeclaSalto.place(x = 300, y = 100),
-                                                                                                                                  en_Salto.place(x=400, y = 100),
-                                                                                                                                  lb_Disparo.place(x = 10, y = 200),
-                                                                                                                                  lb_TeclaDisparo.place(x = 300, y = 200),
-                                                                                                                                  en_Disparo.place(x=400, y = 200),
-                                                                                                                                  lb_MoverIzq.place(x = 10, y = 300),
-                                                                                                                                  lb_TeclaMoverIzq.place(x = 300, y = 300),
-                                                                                                                                  en_MoverIzq.place(x=400, y = 300),
-                                                                                                                                  lb_MoverDer.place(x = 10, y = 400),
-                                                                                                                                  lb_TeclaMoverDer.place(x = 300, y = 400),
-                                                                                                                                  en_MoverDer.place(x=400, y = 400),
+        btn_Controles = Button(C_Help, text = 'Controles', bg = 'black', fg = 'Yellow', height = 1, width = 13, command = lambda:(SetInvisibleControles(),
                                                                                                                                   lb_Ayuda.place_forget(),
-                                                                                                                                  btn_Change.place(x = 1200 , y = 300)) ,  font =("Goudy Stout", 13))# Se encarga de mostrar los controles
+                                                                                                                                  btn_Player1.place(x=900, y = 100),
+                                                                                                                                  btn_Player2.place(x=900, y = 150),
+                                                                                                                                  btn_Player3.place(x=900, y = 200),
+                                                                                                                                  btn_Player4.place(x=900, y = 250)),  font =("Goudy Stout", 13))# Se encarga de mostrar los controles
         btn_Controles.place(x = 1200 , y = 100)
         
-        btn_Objetivo = Button(C_Help, text = 'Objectivo', bg = 'black', fg = 'Yellow', height = 1, width = 13, command = lambda: (lb_Ayuda.place(x=25, y = 100),
-                                                                                                                                  lb_Salto.place_forget(),
-                                                                                                                                  lb_TeclaSalto.place_forget(),
-                                                                                                                                  en_Salto.place_forget(),
-                                                                                                                                  lb_Disparo.place_forget(),
-                                                                                                                                  lb_TeclaDisparo.place_forget(),
-                                                                                                                                  en_Disparo.place_forget(),
-                                                                                                                                  lb_MoverIzq.place_forget(),
-                                                                                                                                  lb_TeclaMoverIzq.place_forget(),
-                                                                                                                                  en_MoverIzq.place_forget(),
-                                                                                                                                  lb_MoverDer.place_forget(),
-                                                                                                                                  lb_TeclaMoverDer.place_forget(),
-                                                                                                                                  en_MoverDer.place_forget(),
-                                                                                                                                  btn_Change.place_forget(),
+        btn_Objetivo = Button(C_Help, text = 'Objectivo', bg = 'black', fg = 'Yellow', height = 1, width = 13, command = lambda: (SetInvisibleControles(),
+                                                                                                                                  lb_Ayuda.place(x=100,y=100),
+                                                                                                                                  btn_Player1.place_forget(),
+                                                                                                                                  btn_Player2.place_forget(),
+                                                                                                                                  btn_Player3.place_forget(),
+                                                                                                                                  btn_Player4.place_forget(),
                                                                                                                                   lB_ErrorInput.place_forget()), font =("Goudy Stout", 13))# Se encarga de mostrar el objetivo del juego 
         btn_Objetivo.place(x = 1200, y = 500 )
 
@@ -316,33 +409,116 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
         btn_Return = Button(C_Help, text = 'Return', bg = 'black', fg = 'Yellow', height = 1, width = 13,command = lambda:General.Menu(), font =("Goudy Stout", 13)) # Regresa al menu Principal
         btn_Return.place(x = 1200, y = 700 )
 
-        
-        
 
-        def CambioControles(Dis, Izq, Sal, Der): #Evalúa que la edición de teclas sea correcta
+        def SetVisibleControles():
+            
+            lb_Salto.place(x = 10, y = 100)
+            lb_TeclaSalto.place(x = 300, y = 100)
+            en_Salto.place(x=400, y = 100)
+
+            lb_Efecto.place(x = 10, y = 200)
+            lb_TeclaEfecto.place(x = 300, y = 200)
+            en_Efecto.place(x=400, y = 200)
+            
+            lb_MoverIzq.place(x = 10, y = 300)
+            lb_TeclaMoverIzq.place(x = 300, y = 300)
+            en_MoverIzq.place(x=400, y = 300)
+            
+            lb_MoverDer.place(x = 10, y = 400)
+            lb_TeclaMoverDer.place(x = 300, y = 400)
+            en_MoverDer.place(x=400, y = 400)
+            
+            btn_Change.place(x = 1200 , y = 300)
+
+        def SetInvisibleControles():
+            lb_Salto.place_forget()
+            lb_TeclaSalto.place_forget()
+            en_Salto.place_forget()
+            lb_Efecto.place_forget()
+            lb_TeclaEfecto.place_forget()
+            en_Efecto.place_forget()
+            lb_MoverIzq.place_forget()
+            lb_TeclaMoverIzq.place_forget()
+            en_MoverIzq.place_forget()
+            lb_MoverDer.place_forget()
+            lb_TeclaMoverDer.place_forget()
+            en_MoverDer.place_forget()
+            btn_Change.place_forget()
+            
+
+
+        def MuestraControles(Efect, Left, Right, Jump, Number):
+            global player
+            player = Number
+
+            print(player)
+            
+            lb_TeclaSalto.config(text = Jump , bg = 'White', fg = 'black', font = "Arial 12")
+            
+            lb_TeclaEfecto.config(text = Efect , bg = 'White', fg = 'black', font = "Arial 12")
+
+            lb_TeclaMoverIzq.config(text = Left , bg = 'White', fg = 'black', font = "Arial 12")
+
+            lb_TeclaMoverDer.config(text = Right , bg = 'White', fg = 'black', font = "Arial 12")
+
+
+        def CambioControles(Efect, Left, Right, Jump): #Evalúa que la edición de teclas sea correcta
 
             global Salto, Derecha, Izquierda, Disparo
 
-            if len(Dis) > 1 or len(Izq) > 1 or len(Sal) > 1 or len(Der) > 1:
+            if len(Efect) > 1 or len(Left) > 1 or len(Right) > 1 or len(Jump) > 1:
                 lB_ErrorInput.config(text= 'SOLO puede ser 1 caracter', bg ='Black', fg = 'Red', font ="Arial 13")
                 lB_ErrorInput.place(x = 100, y = 500)
-            elif Dis == Izq or Dis == Sal or Dis == Der or Izq == Sal or Izq == Der or Sal == Der:
+            elif Efect == Left or Efect == Jump or Efect == Right or Left == Jump or Left == Right or Jump == Right:
                 lB_ErrorInput.config(text= 'Las teclas NO pueden ser las mismas', bg ='Black', fg = 'Red', font ="Arial 13")
                 lB_ErrorInput.place(x = 100, y = 500)
-            elif len(Dis) == 0 or len(Izq)  == 0 or len(Sal)  == 0 or len(Der)  == 0 :
+            elif len(Efect) == 0 or len(Left)  == 0 or len(Jump)  == 0 or len(Right)  == 0 :
                 lB_ErrorInput.config(text= 'La entrada NO puede estar vacía', bg ='Black', fg = 'Red', font ="Arial 13")
                 lB_ErrorInput.place(x = 100, y = 500)
+            elif not ValidaControles(Efect, Left, Right, Jump):
+                lB_ErrorInput.config(text= 'Los controles no deben coincidir con alguno de los controles de los demás jugadores', bg ='Black', fg = 'Red', font ="Arial 13")
+                lB_ErrorInput.place(x = 100, y = 500)
+                
             else:
-                Salto=Sal
-                Derecha=Der
-                Disparo=Dis
-                Izquierda=Izq
+                if player == 1:
+                    player1.efecto = Efect
+                    player1.izquierda = Left
+                    player1.derecha = Right
+                    player1.salto = Jump
+                    print("Estuve en 1")
+                elif player == 2:
+                    player2.efecto = Efect
+                    player2.izquierda = Left
+                    player2.derecha = Right
+                    player2.salto = Jump
+                    print("Estuve en 2")
+                elif player == 3:
+                    player3.efecto = Efect
+                    player3.izquierda = Left
+                    player3.derecha = Right
+                    player3.salto = Jump
+                    print("Estuve en 3")
+                elif player == 4:
+                    player4.efecto = Efect
+                    player4.izquierda = Left
+                    player4.derecha = Right
+                    player4.salto = Jump
+                    print("Estuve en 4")
+                    
+                    
+                Salto=Jump
+                Derecha=Right
+                Disparo=Efect
+                Izquierda=Left
 
-                print (Salto, Derecha, Disparo, Izquierda)
+                print ("Salto1: ",player1.salto, "     Salto2: ",player2.salto, "     Salto3: ",player3.salto, "     Salto4: ",player4.salto)
+                print("Derecha1: ",player1.derecha,"    Derecha2: ",player2.derecha,"    Derecha3: ",player3.derecha,"    Derecha4: ",player4.derecha)
+                print("Efecto1: ",player1.efecto,"     Efecto2: ",player2.efecto,"    Efecto3: ",player3.efecto,"    Efecto4: ",player4.efecto)
+                print("Izquierda1: ", player1.izquierda,"     Izquierda2: ", player2.izquierda,"     Izquierda3: ", player3.izquierda,"     Izquierda4: ", player4.izquierda)
                                 
                 lb_TeclaSalto.config(text = Salto , bg = 'White', fg = 'black', font = "Arial 12")
                 
-                lb_TeclaDisparo.config(text = Disparo , bg = 'White', fg = 'black', font = "Arial 12")
+                lb_TeclaEfecto.config(text = Disparo , bg = 'White', fg = 'black', font = "Arial 12")
 
                 lb_TeclaMoverIzq.config(text = Izquierda , bg = 'White', fg = 'black', font = "Arial 12")
 
@@ -351,7 +527,23 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
                 
                 lB_ErrorInput.config(text= 'Cambios realizados exitósamente', bg ='Black', fg = 'Green', font ="Arial 13")
                 lB_ErrorInput.place(x = 100, y = 500)
+                return
 
+
+        def ValidaControles(Efect, Left, Right, Jump):
+            Condicion = True
+            
+
+            ListaControles = [player1.efecto,player1.izquierda,player1.derecha,player1.salto,player2.efecto,player2.izquierda,player2.derecha,player2.salto,player3.efecto,player3.izquierda,player3.derecha,player3.salto,player4.efecto,player4.izquierda,player4.derecha,player4.salto]
+
+            while ListaControles != []:
+                if ListaControles[0] == Efect or ListaControles[0] == Left or ListaControles[0] == Right or ListaControles[0] == Jump:
+                    Condicion = False
+                    ListaControles = []
+                else:
+                    ListaControles = ListaControles[1:]
+            
+            return Condicion
 
         #End Help
 
