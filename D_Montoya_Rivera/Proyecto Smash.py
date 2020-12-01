@@ -79,7 +79,8 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
 
         
         #General.InterfazJuego("hola", 1)
-        General.Menu()
+        General.SmashInteface(4)
+        #General.Menu()
         WindGame.mainloop()
         
     #End Principal
@@ -223,6 +224,7 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
                 else:
                     EscondeErrores()
                     print("Funca 2")
+                    General.SmashInteface(Jugadores)
             elif Jugadores == 3:
                 if not Jugador1 or not Jugador2 or not Jugador3:
                     MuestraErrores(1)
@@ -231,6 +233,7 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
                 else:
                     EscondeErrores()
                     print("Funca 3")
+                    General.SmashInteface(Jugadores)
             elif Jugadores == 4:
                 if not Jugador1 or not Jugador2 or not Jugador3 or not Jugador4:
                     MuestraErrores(1)
@@ -239,6 +242,8 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
                 else:
                     EscondeErrores()
                     print("Funca 4")
+                    General.SmashInteface(Jugadores)
+                    
 
         def MuestraErrores(Num):
 
@@ -709,6 +714,809 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
         btn_Return = Button(C_GameOver, text = 'Return', bg = 'black', fg = 'Yellow', height = 1, width = 13,command = lambda:General.Menu(), font =("Goudy Stout", 13)) # Regresa al menu Principal
         btn_Return.place(x = 500, y = 700)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def SmashInteface(Players):
+
+        global CoordSlayer1, CoordSlayer2, CoordSlayer3, CoordSlayer4, Condicion1, Condicion2, Condicion3, Condicion4, Tiempo, Build, Slayer1, Slayer2, Slayer3, Slayer4, Caida1, Caida2, Caida3, Caida4, Escudo1, Escudo2, Escudo3, Escudo4, CantPlayers
+
+        CantPlayers = Players
+
+        CoordSlayer1 = [0,0]
+        CoordSlayer1 = [100,100]
+        CoordSlayer1 = [200,200]
+        CoordSlayer1 = [300,300]
+        
+        Condicion1=True
+        Condicion2=True
+        Condicion3=True
+        Condicion4=True
+
+        Caida1=True
+        Caida2=True
+        Caida3=True
+        Caida4=True
+
+        Escudo1=False
+        Escudo2=False
+        Escudo3=False
+        Escudo4=False
+        
+        Tiempo = 300
+        Build  = ""
+        X = 0
+
+
+        
+
+        
+
+        print("El numero de jugadores es: ", Players, " jugadores")
+        
+        C_Juego = Canvas(WindGame, width = 1200 , height = 800, bg = 'green')
+        C_Juego.place(x=0, y=0)
+        
+        C_Objetivos = Canvas(WindGame, width = 300 , height = 800, bg = 'black')
+        C_Objetivos.place(x=1200, y=0)
+        
+        C_Juego.Campo = General.cargarImg2('Escenario.png') #Creacion del escenario del juego
+        Campo = C_Juego.create_image(0,50, anchor = NW , image = C_Juego.Campo)
+
+        #C_Objetivos.Campo = General.cargarImg2('Escenario.png') #Creacion del campo de las misiones
+        #Campo2 = C_Objetivos.create_image(0,0, anchor = NW , image =C_Objetivos.Campo)
+
+
+        #Label para los árboles
+        lb_P1 = Label(C_Objetivos, text= ("Player 1 Tree "), bg ='White', fg = 'Green', font =("Goudy Stout", 10))
+        lb_P1.place(x=0 , y = 0)
+        
+        lb_P2 = Label(C_Objetivos, text= ("Player 2 Tree "), bg ='White', fg = 'Green', font =("Goudy Stout", 10))
+        lb_P2.place(x=0 , y = 200)
+        
+        lb_P3 = Label(C_Objetivos, text= ("Player 3 Tree "), bg ='White', fg = 'Green', font =("Goudy Stout", 10))
+        lb_P3.place(x=0 , y = 400)
+        
+        lb_P4 = Label(C_Objetivos, text= ("Player 4 Tree "), bg ='White', fg = 'Green', font =("Goudy Stout", 10))
+        lb_P4.place(x=0 , y = 600)
+        #Label para los árboles
+
+
+        #Label del Objetivo y Tiempo del juego
+
+        lb_ObjetivoTime = Label(C_Juego, text= ("Tiempo:" , Tiempo, "Build:", Build), bg ='Black', fg = 'Yellow', font =("Goudy Stout", 10), height = 3, width=75)
+        lb_ObjetivoTime.place(x=0 , y = 0) 
+
+
+        def GeneraRandom(Num):
+            X = (random.randint(1,Num))
+            return X
+
+        def MovDoom(event):
+            
+                    #Movimiento del Jugador 1
+                    def MovDoomUp(CordY): #Realiza el salto del personaje
+
+                        global CoordSlayer1, Condicion1
+                        
+                        coordSlayer1 = CoordSlayer1 #Coordenada del pesonaje controlado
+                        
+                        
+                        if CordY >= 250: #Limite del salto
+                            MovDoomDown(CordY) #Llamada a la funcion de caída del personaje
+                        else:
+                            C_Juego.coords(Slayer1, coordSlayer1[0], coordSlayer1[1]-4)
+                            WindGame.after(7, lambda:MovDoomUp(CordY+2))
+
+
+                    def MovDoomDown(CordY): #Caída del personaje
+                        global CoordSlayer1,Condicion1, Caida1
+                        
+                        coordSlayer1 = CoordSlayer1
+
+                        if Caida1 == True:
+                            Condicion1 = False
+                            WindGame.after(5, lambda:MovDoomDown(CordY))
+                        elif CordY <= 0 or Caida1 == False:
+                            Condicion1 = True
+                        else:
+                            C_Juego.coords(Slayer1, coordSlayer1[0], coordSlayer1[1]+2)
+                            WindGame.after(5, lambda:MovDoomDown(CordY-2))
+
+
+                    def ActivarEfecto():
+                        global CoordSlayer2, CoordSlayer3, CoordSlayer4, Escudo1, Escudo2, Escudo3, Escudo4
+                        if player1.poder == "Force":
+                            player1.poder=""
+                            if Players == 2:
+                                if not Escudo2:
+                                    C_Juego.coords(Slayer2,CoordSlayer2[0]+100, CoordSlayer2[1])
+                                else:
+                                    print("El jugador 2 tiene escudo activo")
+                            elif Players == 3:
+                                y = GeneraRandom(2)
+                                if y == 2:
+                                    if not Escudo2:
+                                        C_Juego.coords(Slayer2,CoordSlayer2[0]+100, CoordSlayer2[1])
+                                    else:
+                                        print("El jugador 2 tiene escudo activo")
+                                else:
+                                    if not Escudo3:
+                                        C_Juego.coords(Slayer3,CoordSlayer3[0]+100, CoordSlayer3[1])
+                                    else:
+                                        print("El jugador 3 tiene escudo activo")
+                            elif Players == 4:
+                                y = GeneraRandom(3)
+                                if y == 1:
+                                    if not Escudo2:
+                                        C_Juego.coords(Slayer2,CoordSlayer2[0]+100, CoordSlayer2[1])
+                                    else:
+                                        print("El jugador 2 tiene escudo activo")
+                                elif y == 2:
+                                    if not Escudo3:
+                                        C_Juego.coords(Slayer3,CoordSlayer3[0]+100, CoordSlayer3[1])
+                                    else:
+                                        print("El jugador 3 tiene escudo activo")
+                                else:
+                                    if not Escudo4:
+                                        C_Juego.coords(Slayer4,CoordSlayer4[0]+100, CoordSlayer4[1])
+                                    else:
+                                        print("El jugador 4 tiene escudo activo")
+                                    
+                        elif player1.poder == "Shield":
+                            player1.poder = ""
+                            ActivaEscudo(1)
+                        elif player1.poder == "Jump":
+                            player1.poder = ""
+                            CoordX = (random.randint(360,1000))
+                            C_Juego.coords(Slayer1,CoordX,50)
+                        else:
+                            print("1, No tienes ningún efecto activo")
+                        
+                    #Movimiento del Jugador 1
+
+
+
+                        
+
+
+                    #Movimiento del Jugador 2
+                    def MovDoomUp2(CordY): #Realiza el salto del personaje
+
+                        global CoordSlayer2, Condicion2
+                        
+                        coordSlayer2 = CoordSlayer2
+                        
+                        if CordY >= 250: #Limite del salto
+                            MovDoomDown2(CordY) #Llamada a la funcion de caída del personaje
+                        else:
+                            C_Juego.coords(Slayer2, coordSlayer2[0], coordSlayer2[1]-4)
+                            WindGame.after(7, lambda:MovDoomUp2(CordY+2))
+
+
+                    def MovDoomDown2(CordY): #Caída del personaje
+                        global CoordSlayer2,Condicion2, Caida2
+                        
+                        coordSlayer2 = CoordSlayer2 
+
+                        if Caida2==True:
+                            Condicion2 = False
+                            WindGame.after(5, lambda:MovDoomDown2(CordY))
+                        elif CordY <= 0 or Caida2 == False:
+                            Condicion2 = True
+                        else:
+                            C_Juego.coords(Slayer2, coordSlayer2[0], coordSlayer2[1]+2)
+                            WindGame.after(5, lambda:MovDoomDown2(CordY-2))
+
+                    def ActivarEfecto2():
+                        global CoordSlayer1, CoordSlayer3, CoordSlayer4, Escudo1, Escudo2, Escudo3, Escudo4
+                        if player2.poder == "Force":
+                            player2.poder=""
+                            if Players == 2:
+                                if not Escudo1:
+                                    C_Juego.coords(Slayer1,CoordSlayer1[0]+100, CoordSlayer1[1])
+                                else:
+                                    print("El jugador 1 tiene escudo activo")
+                            elif Players == 3:
+                                y = GeneraRandom(2)
+                                if y == 1:
+                                    if not Escudo1:
+                                        C_Juego.coords(Slayer1,CoordSlayer1[0]+100, CoordSlayer1[1])
+                                    else:
+                                        print("El jugador 1 tiene escudo activo")
+                                else:
+                                    if not Escudo3:
+                                        C_Juego.coords(Slayer3,CoordSlayer3[0]+100, CoordSlayer3[1])
+                                    else:
+                                        print("El jugador 3 tiene escudo activo")
+                            elif Players == 4:
+                                y = GeneraRandom(3)
+                                if y == 1:
+                                    if not Escudo1:
+                                        C_Juego.coords(Slayer1,CoordSlayer1[0]+100, CoordSlayer1[1])
+                                    else:
+                                        print("El jugador 1 tiene escudo activo")
+                                elif y == 2:
+                                    if not Escudo3:
+                                        C_Juego.coords(Slayer3,CoordSlayer3[0]+100, CoordSlayer3[1])
+                                    else:
+                                        print("El jugador 3 tiene escudo activo")
+                                else:
+                                    if not Escudo4:
+                                        C_Juego.coords(Slayer4,CoordSlayer4[0]+100, CoordSlayer4[1])
+                                    else:
+                                        print("El jugador 4 tiene escudo activo")
+                                    
+                        elif player2.poder == "Shield":
+                            player2.poder = ""
+                            ActivaEscudo(2)
+                        elif player2.poder == "Jump":
+                            player2.poder = ""
+                            CoordX = (random.randint(360,1000))
+                            C_Juego.coords(Slayer2,CoordX,50)
+                        else:
+                            print("2, No tienes ningún efecto activo")
+
+                    #Movimiento del Jugador 2
+
+
+                    #Movimiento del Jugador 3
+                    def MovDoomUp3(CordY): #Realiza el salto del personaje
+
+                        global CoordSlayer3, Condicion3
+                        
+                        coordSlayer3 = CoordSlayer3
+                        
+                        if CordY >= 250: #Limite del salto
+                            MovDoomDown3(CordY) #Llamada a la funcion de caída del personaje
+                        else:
+                            C_Juego.coords(Slayer3, coordSlayer3[0], coordSlayer3[1]-4)
+                            WindGame.after(7, lambda:MovDoomUp3(CordY+2))
+
+
+                    def MovDoomDown3(CordY): #Caída del personaje
+                        global CoordSlayer3,Condicion3, Caida3
+                        
+                        coordSlayer3 = CoordSlayer3
+                        
+                        if Caida3 == True:
+                            Condicion3 = False
+                            WindGame.after(5, lambda:MovDoomDown3(CordY)) 
+                        elif CordY <= 0 or Caida3 == False:
+                            Condicion3 = True
+                        else:
+                            C_Juego.coords(Slayer3, coordSlayer3[0], coordSlayer3[1]+2)
+                            WindGame.after(5, lambda:MovDoomDown3(CordY-2))
+
+
+                    def ActivarEfecto3():
+                        global CoordSlayer1, CoordSlayer2, CoordSlayer4, Escudo1, Escudo2, Escudo3, Escudo4
+                        
+                        if player3.poder == "Force":
+                            player1.poder=""
+                            if Players == 3:
+                                y = GeneraRandom(2)
+                                if y == 1:
+                                    if not Escudo1:
+                                        C_Juego.coords(Slayer1,CoordSlayer1[0]+100, CoordSlayer1[1])
+                                    else:
+                                        print("El jugador 1 tiene escudo activo")
+                                else:
+                                    if not Escudo2:
+                                        C_Juego.coords(Slayer2,CoordSlayer2[0]+100, CoordSlayer2[1])
+                                    else:
+                                        print("El jugador 2 tiene escudo activo")
+                            elif Players == 4:
+                                y = GeneraRandom(3)
+                                if y == 1:
+                                    if not Escudo1:
+                                        C_Juego.coords(Slayer1,CoordSlayer1[0]+100, CoordSlayer1[1])
+                                    else:
+                                        print("El jugador 1 tiene escudo activo")
+                                elif y == 2:
+                                    if not Escudo2:
+                                        C_Juego.coords(Slayer2,CoordSlayer2[0]+100, CoordSlayer2[1])
+                                    else:
+                                        print("El jugador 2 tiene escudo activo")
+                                else:
+                                    if not Escudo4:
+                                        C_Juego.coords(Slayer4,CoordSlayer4[0]+100, CoordSlayer4[1])
+                                    else:
+                                        print("El jugador 4 tiene escudo activo")
+                                    
+                        elif player3.poder == "Shield":
+                            player3.poder = ""
+                            ActivaEscudo(3)
+                        elif player3.poder == "Jump":
+                            player3.poder = ""
+                            CoordX = (random.randint(360,1000))
+                            C_Juego.coords(Slayer3,CoordX,50)
+                        else:
+                            print("3, No tienes ningún efecto activo")
+                    #Movimiento del Jugador 3
+                        
+                    #Movimiento del Jugador 4
+                    def MovDoomUp4(CordY): #Realiza el salto del personaje
+
+                        global CoordSlayer4, Condicion4
+                        
+                        coordSlayer4 = CoordSlayer4
+                        
+                        if CordY >= 250: #Limite del salto
+                            MovDoomDown4(CordY) #Llamada a la funcion de caída del personaje
+                        else:
+                            C_Juego.coords(Slayer4, coordSlayer4[0], coordSlayer4[1]-4)
+                            WindGame.after(7, lambda:MovDoomUp4(CordY+2))
+
+                    def MovDoomDown4(CordY): #Caída del personaje
+                        global CoordSlayer4,Condicion4, Caida4
+                        
+                        coordSlayer4 = CoordSlayer4
+
+                        if Caida4 == True:
+                            Condicion4 = False
+                            WindGame.after(5, lambda:MovDoomDown4(CordY))
+                        elif CordY <= 0 or Caida4 == False:
+                            Condicion4 = True
+                        else:
+                            C_Juego.coords(Slayer4, coordSlayer4[0], coordSlayer4[1]+2)
+                            WindGame.after(5, lambda:MovDoomDown4(CordY-2))
+
+
+                    def ActivarEfecto4():
+                        global CoordSlayer1, CoordSlayer2, CoordSlayer3, Escudo1, Escudo2, Escudo3, Escudo4
+                        
+                        if player4.poder == "Force":
+                            #player4.poder=""
+                            y = GeneraRandom(3)
+                            if y == 1:
+                                if not Escudo1:
+                                    C_Juego.coords(Slayer1,CoordSlayer1[0]+100, CoordSlayer1[1])
+                                else:
+                                    print("El jugador 1 tiene escudo activo")
+                            elif y == 2:
+                                if not Escudo2:
+                                    C_Juego.coords(Slayer2,CoordSlayer2[0]+100, CoordSlayer2[1])
+                                else:
+                                    print("El jugador 2 tiene escudo activo")
+                            else:
+                                if not Escudo3:
+                                    C_Juego.coords(Slayer3,CoordSlayer3[0]+100, CoordSlayer3[1])
+                                else:
+                                    print("El jugador 3 tiene escudo activo")
+                                    
+                        elif player4.poder == "Shield":
+                            #player4.poder = ""
+                            ActivaEscudo(4)
+                        elif player4.poder == "Jump":
+                            #player4.poder = ""
+                            CoordX = (random.randint(360,1000))
+                            C_Juego.coords(Slayer4,CoordX,50)
+                        else:
+                            print("4, No tienes ningún efecto activo")
+
+                    #Movimiento del Jugador 4
+
+
+        #***************Acciones del personaje*********************
+                        
+                    global CoordSlayer1, Condicion1, CoordSlayer2, Condicion2, CoordSlayer3, Condicion3, CoordSlayer4, Condicion4
+
+
+
+                    def mov1():
+                        global CoordSlayer1, Condicion1
+                        
+                        
+                        if (event.char).upper() == player1.izquierda: #Al ser presionada la tecla el personaje se mueve a la izquierda
+                            if CoordSlayer1[0] >= 5: #Limite del movimiento con respecto al tamaño Canvas, evita que el personaje se salga de la pantalla de juego
+                                
+                                C_Juego.coords(Slayer1, CoordSlayer1[0]-12, CoordSlayer1[1])#Movimiento del personaje a la izquierda
+                                
+                                
+                                
+                        elif(event.char).upper() == player1.derecha:#Al ser presionada la tecla el personaje se mueve a la derecha
+                            if CoordSlayer1[0] <= 1125:#Limite del movimiento con respecto al tamaño Canvas, evita que el personaje se salga de la pantalla de juego
+
+                                C_Juego.coords(Slayer1, CoordSlayer1[0]+12, CoordSlayer1[1])#Movimiento del personaje a la derecha
+                                
+                                
+                        elif(event.char).upper() == player1.salto: #Al ser presionada la tecla el personaje salta
+                            if Condicion1: #No puede saltar hasta que llegue a la coordenada y = 656
+                                Condicion1 = False
+                                MovDoomUp(0)#Llamada al salto
+                            
+                        elif (event.char).upper() == player1.efecto: #Tecla de disparo
+                                    Thread(target=ActivarEfecto()).start() #Llamada al disparo
+
+                    def mov2():
+                        global CoordSlayer2, Condicion2
+                        
+                        if (event.char).upper() == player2.izquierda: #Al ser presionada la tecla el personaje se mueve a la izquierda
+                            if CoordSlayer2[0] >= 5: #Limite del movimiento con respecto al tamaño Canvas, evita que el personaje se salga de la pantalla de juego
+                                
+                                C_Juego.coords(Slayer2, CoordSlayer2[0]-12, CoordSlayer2[1])#Movimiento del personaje a la izquierda
+                                
+                                
+                                
+                        elif(event.char).upper() == player2.derecha:#Al ser presionada la tecla el personaje se mueve a la derecha
+                            if CoordSlayer2[0] <= 1125:#Limite del movimiento con respecto al tamaño Canvas, evita que el personaje se salga de la pantalla de juego
+
+                                C_Juego.coords(Slayer2, CoordSlayer2[0]+12, CoordSlayer2[1])#Movimiento del personaje a la derecha
+                                
+                                
+                        elif(event.char).upper() == player2.salto: #Al ser presionada la tecla el personaje salta
+                            if Condicion2: #No puede saltar hasta que llegue a la coordenada y = 656
+                                Condicion2 = False
+                                MovDoomUp2(0)#Llamada al salto
+                            
+                        elif (event.char).upper() == player2.efecto: #Tecla de disparo
+                                    Thread(target=ActivarEfecto2()).start() #Llamada al disparo
+
+                    def mov3():
+                        global CoordSlayer3, Condicion3
+                        
+                        
+                        if (event.char).upper() == player3.izquierda: #Al ser presionada la tecla el personaje se mueve a la izquierda
+                            if CoordSlayer3[0] >= 5: #Limite del movimiento con respecto al tamaño Canvas, evita que el personaje se salga de la pantalla de juego
+                                
+                                C_Juego.coords(Slayer3, CoordSlayer3[0]-12, CoordSlayer3[1])#Movimiento del personaje a la izquierda
+                                
+                                
+                                
+                        elif(event.char).upper() == player3.derecha:#Al ser presionada la tecla el personaje se mueve a la derecha
+                            if CoordSlayer3[0] <= 1125:#Limite del movimiento con respecto al tamaño Canvas, evita que el personaje se salga de la pantalla de juego
+
+                                C_Juego.coords(Slayer3, CoordSlayer3[0]+12, CoordSlayer3[1])#Movimiento del personaje a la derecha
+                                
+                                
+                        elif(event.char).upper() == player3.salto: #Al ser presionada la tecla el personaje salta
+                            if Condicion3: #No puede saltar hasta que llegue a la coordenada y = 656
+                                Condicion3 = False
+                                MovDoomUp3(0)#Llamada al salto
+                            
+                        elif (event.char).upper() == player3.efecto: #Tecla de disparo
+                                    Thread(target=ActivarEfecto3()).start() #Llamada al disparo
+                                    
+                    def mov4():
+                        global CoordSlayer4, Condicion4
+
+                        
+                        
+                        if (event.char).upper() == player4.izquierda: #Al ser presionada la tecla el personaje se mueve a la izquierda
+                            if CoordSlayer4[0] >= 5: #Limite del movimiento con respecto al tamaño Canvas, evita que el personaje se salga de la pantalla de juego
+                                
+                                C_Juego.coords(Slayer4, CoordSlayer4[0]-12, CoordSlayer4[1])#Movimiento del personaje a la izquierda
+                                
+                                
+                                
+                        elif(event.char).upper() == player4.derecha:#Al ser presionada la tecla el personaje se mueve a la derecha
+                            if CoordSlayer4[0] <= 1125:#Limite del movimiento con respecto al tamaño Canvas, evita que el personaje se salga de la pantalla de juego
+
+                                C_Juego.coords(Slayer4, CoordSlayer4[0]+12, CoordSlayer4[1])#Movimiento del personaje a la derecha
+                                
+                                
+                        elif(event.char).upper() == player4.salto: #Al ser presionada la tecla el personaje salta
+                            if Condicion4: #No puede saltar hasta que llegue a la coordenada y = 656
+                                Condicion4 = False
+                                MovDoomUp4(0)#Llamada al salto
+                            
+                        elif (event.char).upper() == player4.efecto: #Tecla de disparo
+                                    Thread(target=ActivarEfecto4()).start() #Llamada al disparo
+
+                        
+                    Thread(target=mov1()).start()
+                    Thread(target=mov2()).start()
+
+                    if Players >=3:
+                        Thread(target=mov3()).start()
+                        if Players ==4:
+                            Thread(target=mov4()).start()
+                        
+                #End MovDoom
+
+
+        def Timer(): #Es el temporizador del juego
+            global Tiempo
+            
+            if Tiempo == 0:#Si el tiempo a 0 el juego termina
+                return
+            else:
+                Tiempo -=10
+                WindGame.after(1000,lambda:Timer())
+                
+        
+
+        def Objetivo():
+            global Tiempo, Build
+            if Tiempo == 300 or Tiempo == 240  or Tiempo == 180  or Tiempo == 120  or Tiempo == 60:
+                GeneraObjetivo()
+                WindGame.after(1000, lambda:Objetivo())
+            else:
+                WindGame.after(1, lambda:Objetivo())
+
+        def GeneraObjetivo():
+            global Build
+            X = (random.randint(1,4))
+            print(X)
+            if X == 1:
+                Build = "BST"
+            elif X == 2:
+                Build = "AVL"
+            elif X == 3:
+                Build = "B TREE"
+            else:
+                Build = "SPLAY"
+
+        
+        def TimerObj(): #La funcion actualiza el tiempo, vida y puntuacion del jugador
+            global Tiempo, Build
+
+            lb_ObjetivoTime.config(text= ("Tiempo:" , Tiempo, "Build:", Build), bg ='Black', fg = 'Yellow', font =("Goudy Stout", 10), height = 3, width=75)
+
+            if Tiempo == 0:#Si el tiempo a 0 el juego termina
+                General.GameOver("Prueba", 100, "Victoria")
+            else:
+                WindGame.after(1,lambda:TimerObj())
+                
+
+
+        def gravity1():
+            global CoordSlayer1, Caida1, CantPlayers
+            
+            if CoordSlayer1[1] >= 700:
+                C_Juego.delete(Slayer1)
+                print("Adios 1")
+                CantPlayers -= 1
+            else:
+                if (CoordSlayer1[0]+30 >= 555  and CoordSlayer1[0]+30 <= 1050 and CoordSlayer1[1]+130 >=255 and CoordSlayer1[1]+130 <=265) or (CoordSlayer1[0]+30 >= 260  and CoordSlayer1[0]+30 <= 480 and CoordSlayer1[1]+130 >=360 and CoordSlayer1[1]+130 <=370) or (CoordSlayer1[0]+30 >= 1130  and CoordSlayer1[0]+30 <= 1200 and CoordSlayer1[1]+130 >=360 and CoordSlayer1[1]+130 <=370) or (CoordSlayer1[0]+30 >= 910  and CoordSlayer1[0]+30 <= 1200 and CoordSlayer1[1]+130 >=460 and CoordSlayer1[1]+130 <=470) or (CoordSlayer1[0]+30 >= 330  and CoordSlayer1[0]+30 <= 700 and CoordSlayer1[1]+130 >=460 and CoordSlayer1[1]+130 <=470):
+                    Caida1 = False
+                    WindGame.after(10,lambda:gravity1())
+                else:
+                    Caida1 = True
+                    C_Juego.coords(Slayer1, CoordSlayer1[0], CoordSlayer1[1]+3)
+                    WindGame.after(10,lambda:gravity1())
+                
+        def gravity2():
+            global CoordSlayer2, Caida2, CantPlayers
+            
+            if CoordSlayer2[1] >= 700:
+                C_Juego.delete(Slayer2)
+                print("Adios 2")
+                CantPlayers -= 1
+            else:
+                if (CoordSlayer2[0]+30 >= 555  and CoordSlayer2[0]+30 <= 1050 and CoordSlayer2[1]+130 >=255 and CoordSlayer2[1]+130 <=265) or (CoordSlayer2[0]+30 >= 260  and CoordSlayer2[0]+30 <= 480 and CoordSlayer2[1]+130 >=360 and CoordSlayer2[1]+130 <=370) or (CoordSlayer2[0]+30 >= 1130  and CoordSlayer2[0]+30 <= 1200 and CoordSlayer2[1]+130 >=360 and CoordSlayer2[1]+130 <=370) or (CoordSlayer2[0]+30 >= 910  and CoordSlayer2[0]+30 <= 1200 and CoordSlayer2[1]+130 >=460 and CoordSlayer2[1]+130 <=470) or (CoordSlayer2[0]+30 >= 330  and CoordSlayer2[0]+30 <= 700 and CoordSlayer2[1]+130 >=460 and CoordSlayer2[1]+130 <=470):
+                    Caida2 = False
+                    WindGame.after(10,lambda:gravity2())
+                else:
+                    Caida2 = True
+                    C_Juego.coords(Slayer2, CoordSlayer2[0], CoordSlayer2[1]+3)
+                    WindGame.after(10,lambda:gravity2())
+                
+        def gravity3():
+            global CoordSlayer3, Caida3, CantPlayers
+            
+            if CoordSlayer3[1] >= 700:
+                C_Juego.delete(Slayer3)
+                print("Adios 3")
+                CantPlayers -= 1
+            else:
+                if (CoordSlayer3[0]+30 >= 555  and CoordSlayer3[0]+30 <= 1050 and CoordSlayer3[1]+130 >=255 and CoordSlayer3[1]+130 <=265) or (CoordSlayer3[0]+30 >= 260  and CoordSlayer3[0]+30 <= 480 and CoordSlayer3[1]+130 >=360 and CoordSlayer3[1]+130 <=370) or (CoordSlayer3[0]+30 >= 1130  and CoordSlayer3[0]+30 <= 1200 and CoordSlayer3[1]+130 >=360 and CoordSlayer3[1]+130 <=370) or (CoordSlayer3[0]+30 >= 910  and CoordSlayer3[0]+30 <= 1200 and CoordSlayer3[1]+130 >=460 and CoordSlayer3[1]+130 <=470) or (CoordSlayer3[0]+30 >= 330  and CoordSlayer3[0]+30 <= 700 and CoordSlayer3[1]+130 >=460 and CoordSlayer3[1]+130 <=470):
+                    Caida3 = False
+                    WindGame.after(10,lambda:gravity3())
+                else:
+                    Caida3 = True
+                    C_Juego.coords(Slayer3, CoordSlayer3[0], CoordSlayer3[1]+3)
+                    WindGame.after(10,lambda:gravity3())
+                
+        def gravity4():
+            global CoordSlayer4, Caida4, CantPlayers
+            
+            if CoordSlayer4[1] >= 700:
+                C_Juego.delete(Slayer4)
+                print("Adios 4")
+                CantPlayers -= 1
+            else:
+                if (CoordSlayer4[0]+30 >= 555  and CoordSlayer4[0]+30 <= 1050 and CoordSlayer4[1]+130 >=255 and CoordSlayer4[1]+130 <=265) or (CoordSlayer4[0]+30 >= 260  and CoordSlayer4[0]+30 <= 480 and CoordSlayer4[1]+130 >=360 and CoordSlayer4[1]+130 <=370) or (CoordSlayer4[0]+30 >= 1130  and CoordSlayer4[0]+30 <= 1200 and CoordSlayer4[1]+130 >=360 and CoordSlayer4[1]+130 <=370) or (CoordSlayer4[0]+30 >= 910  and CoordSlayer4[0]+30 <= 1200 and CoordSlayer4[1]+130 >=460 and CoordSlayer4[1]+130 <=470) or (CoordSlayer4[0]+30 >= 330  and CoordSlayer4[0]+30 <= 700 and CoordSlayer4[1]+130 >=460 and CoordSlayer4[1]+130 <=470):
+                    Caida4 = False
+                    WindGame.after(10,lambda:gravity4())
+                else:
+                    Caida4 = True
+                    C_Juego.coords(Slayer4, CoordSlayer4[0], CoordSlayer4[1]+3)
+                    WindGame.after(10,lambda:gravity4())
+
+
+        def posPlayer1():
+            global CoordSlayer1
+
+            CoordSlayer1 = C_Juego.coords(Slayer1)
+
+            if CoordSlayer1[1] >= 700 or Tiempo == 0:
+                return
+            else:
+                WindGame.after(1, lambda: posPlayer1())
+                
+        def posPlayer2():
+            global CoordSlayer2
+
+            CoordSlayer2 = C_Juego.coords(Slayer2)
+
+            if CoordSlayer2[1] >= 700 or Tiempo == 0:
+                return
+            else:
+                WindGame.after(1, lambda: posPlayer2())
+
+                
+        def posPlayer3():
+            global CoordSlayer3
+
+            CoordSlayer3 = C_Juego.coords(Slayer3)
+
+            if CoordSlayer3[1] >= 700 or Tiempo == 0:
+                return
+            else:
+                WindGame.after(1, lambda: posPlayer3())
+
+        def posPlayer4():
+            global CoordSlayer4
+
+            CoordSlayer4 = C_Juego.coords(Slayer4)
+
+            if CoordSlayer4[1] >= 700 or Tiempo == 0:
+                return
+            else:
+                WindGame.after(1, lambda: posPlayer4())
+
+
+        def ActivaEscudo(Jugador):
+            global Escudo1,Escudo2,Escudo3,Escudo4
+
+            if Jugador == 1:
+                Escudo1 = True
+                print("1" , Escudo1)
+            elif Jugador == 2:
+                Escudo2 = True
+                print("2" , Escudo2)
+            elif Jugador == 3:
+                Escudo3 = True
+                print("3" , Escudo3)
+            else:
+                Escudo4 = True
+                print("4" , Escudo4)
+            WindGame.after(10000, lambda:DesactivaEscudo(Jugador))
+                
+        def DesactivaEscudo(Jugador):
+            global Escudo1,Escudo2,Escudo3,Escudo4
+            if Jugador == 1:
+                Escudo1 = False
+                print("1" , Escudo1)
+            elif Jugador == 2:
+                Escudo2 = False
+                print("2" , Escudo2)
+            elif Jugador == 3:
+                Escudo3 = False
+                print("3" , Escudo3)
+            else:
+                Escudo4 = False
+                print("4" , Escudo4)
+
+
+
+        #Creación de Personajes
+        C_Juego.Slayer1 = General.cargarImg2('Slayer\Slayer1.png') #Creación del personaje que el jugador opera
+        Slayer1 = C_Juego.create_image(400,666,anchor = NW, image =C_Juego.Slayer1)
+        C_Juego.coords(Slayer1, 600, 120)
+
+        C_Juego.Slayer2 = General.cargarImg2('Slayer\Slayer2.png') #Creación del personaje que el jugador opera
+        Slayer2 = C_Juego.create_image(500,666,anchor = NW, image =C_Juego.Slayer2)
+        C_Juego.coords(Slayer2, 250, 225)
+        
+        if Players >=3: #Evaluación para la creación del tercer jugador
+            
+            C_Juego.Slayer3 = General.cargarImg2('Slayer\Slayer3.png') #Creación del personaje que el jugador opera
+            Slayer3 = C_Juego.create_image(100,666,anchor = NW, image =C_Juego.Slayer3)
+            C_Juego.coords(Slayer3, 600, 325)
+            Thread(target=posPlayer3()).start()
+            Thread(target=gravity3()).start()
+            
+            if Players == 4:#Evaluación para la creación del cuarto jugador
+                
+                C_Juego.Slayer4 = General.cargarImg2('Slayer\Slayer4.png') #Creación del personaje que el jugador opera
+                Slayer4 = C_Juego.create_image(700,666,anchor = NW, image =C_Juego.Slayer4)
+                C_Juego.coords(Slayer4, 1000, 325)
+                Thread(target=posPlayer4()).start()
+                Thread(target=gravity4()).start()
+
+        C_Juego.Pixel = General.cargarImg2('pixel.png') #Creación del personaje que el jugador opera
+        Pixel = C_Juego.create_image(330,460,anchor = NW, image =C_Juego.Pixel)
+
+        #Creación de Personajes
+
+                
+        #Llamada de funciones
+
+        C_Juego.bind("<KeyPress>", MovDoom) #Llamada a la funcion que contiene las acciones del personaje
+        C_Juego.focus_set() #Hace que el Canvas se enfoque en la accion a realizar por parte de la tecla
+
+        GeneraObjetivo()
+
+        Thread(target=Timer()).start()      
+        Thread(target=Objetivo()).start()        
+        Thread(target=TimerObj()).start()
+        Thread(target=posPlayer1()).start()
+        Thread(target=posPlayer2()).start()
+        Thread(target=gravity1()).start()
+        
+        Thread(target=gravity2()).start()
+        
+        #Llamada de funciones
+
+
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     def InterfazJuego(Name, Lvl): #Recibe el nombre del usuario, y el dificultad
         """
 *************************************************************************
@@ -1221,7 +2029,7 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
                     MovDoomDown() #Llamada a la funcion de caída del personaje
                 else:
                     C_Juego.coords(Slayer, coordSlayer[0], coordSlayer[1]-2)
-                    WindGame.after(1, lambda:MovDoomUp())
+                    WindGame.after(7, lambda:MovDoomUp())
 
 
             def MovDoomDown(): #Caída del personaje
