@@ -95,19 +95,6 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
                         Ingeniería en Computadores
         Función: Principal
 
-        Lenguaje y version: Pthon 3.8.2
-
-        Autores:
-        Daniel Montoya Rivera
-        Kendall Adolfo Martinez Carvajal
-        
-
-        Version 1.0
-
-        Fecha de modificación: 17/7/2020
-
-        Descripcion de la Funcion: 
-        La funcion se encarga de la
         Descripcion de la Funcion: 
         La funcion se encarga de la creacion de toda la interfaz gráfica,
         ajusta su tamaño, evita que su tamaño sea editable y le añade un
@@ -116,9 +103,6 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
         ícono a esta. Luego de establecer estos parámetros llama a la
         funcion
 
-        Entradas: Ninguna
-
-        Salidas: Llamada a la funcion Menu
 
 *************************************************************************
         """
@@ -139,9 +123,8 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
         WindGame.iconphoto(False, PhotoImage(file = 'img\icon.png'))
 
         
-        #General.InterfazJuego("hola", 1)
-        General.SmashInteface(4,"1","2","3","4")
-        #General.Menu()
+        #General.SmashInteface(4,"1","2","3","4")
+        General.Menu()
         WindGame.mainloop()
         
     #End Principal
@@ -662,34 +645,12 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
 *************************************************************************
                     Instituto Tecnológico de Costa Rica
                         Ingeniería en Computadores
-        Función: Menu
-
-        Lenguaje y version: Pthon 3.8.2
-
-        Autor: Daniel Montoya Rivera
-
-        Version 1.0
-
-        Fecha de modificación: 17/7/2020
 
         Descripcion de la Funcion: 
         La funcion crea un canvas que contiene al menu principal del juego
         y dentro de ese mismo canvas añade seis botones que realizan llamadas
         a seis funciones diferentes cuando son presionados, estas funciones
-        tienen un botón que les permite regresar al menu principal.
-
-        Entradas: Ninguna
-
-        Salidas: Llamada a la funcion:
-        -CargarImg2
-        -Musica
-        -Play
-        -Score
-        -Help
-        -Credits
-        -Callback
-        
-        
+        tienen un botón que les permite regresar al menu principal. 
 
 *************************************************************************
         """
@@ -755,25 +716,28 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
             lb_Fin = Label(C_GameOver, text= ("El tiempo se ha acabado"), bg ='Black', fg = 'Red', font =("Goudy Stout", 13))
             lb_Fin.place(x= 250, y = 10)
 
-            lb_Name = Label(C_GameOver, text= ("Name: " + Jugador), bg ='Black', fg = 'Yellow', font =("Goudy Stout", 13))
+            lb_Name = Label(C_GameOver, text= ("Winner: " + Jugador), bg ='Black', fg = 'Yellow', font =("Goudy Stout", 13))
             lb_Name.place(x= 250, y = 50)
             
             lb_SCORE = Label(C_GameOver, text= ("Puntuacion = " + str(Score) + " pts"), bg ='Black', fg = 'Red', font =("Goudy Stout", 13))
             lb_SCORE.place(x=250, y = 100)
             
         else:
-            lb_Fin = Label(C_GameOver, text= ("Te han matado"), bg ='Black', fg = 'Red', font =("Goudy Stout", 13))
+            lb_Fin = Label(C_GameOver, text= ("Los jugadores se han caído del mapa"), bg ='Black', fg = 'Red', font =("Goudy Stout", 13))
             lb_Fin.place(x=250,y=10)
+
+            lb_Name = Label(C_GameOver, text= ("Winner: " + Jugador), bg ='Black', fg = 'Yellow', font =("Goudy Stout", 13))
+            lb_Name.place(x= 250, y = 50)
             
-            lb_SCORE = Label(C_GameOver, text= ("Puntuacion = " + str(SCORE) + " pts"), bg ='Black', fg = 'Red', font =("Goudy Stout", 13))
-            lb_SCORE.place(x=250, y = 50)
+            lb_SCORE = Label(C_GameOver, text= ("Puntuacion = " + str(Score) + " pts"), bg ='Black', fg = 'Red', font =("Goudy Stout", 13))
+            lb_SCORE.place(x=250, y = 100)
 
 
 
 
             
         btn_Return = Button(C_GameOver, text = 'Return', bg = 'black', fg = 'Yellow', height = 1, width = 13,command = lambda:General.Menu(), font =("Goudy Stout", 13)) # Regresa al menu Principal
-        btn_Return.place(x = 500, y = 700)
+        btn_Return.place(x = 1200, y = 700)
 
 
 
@@ -803,6 +767,8 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
 
         StatusPlayer1 = True
         StatusPlayer2 = True
+        StatusPlayer3 = False
+        StatusPlayer4 = False
 
         if Players >= 3:
             StatusPlayer3 = True
@@ -1433,7 +1399,7 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
                     elif StatusPlayer4:
                         Winner = Name4
                         Puntuacion = Score4
-                    General.GameOver(Winner, Puntuacion, "Victoria")
+                    General.GameOver(Winner, Puntuacion, "Derrota")
                     
                 elif Tiempo <=0:
 
@@ -1726,41 +1692,6 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
                     
                 WindGame.after(7000, lambda: generaPowers())
 
-
-
-        """
-        lb_P1 = Label(C_Objetivos, text= ("Player 1 Tree    PTS:", Score1), bg ='White', fg = 'Green', font =("Goudy Stout", 10))
-        lb_P1.place(x=0 , y = 0)
-        
-        lb_P2 = Label(C_Objetivos, text= ("Player 2 Tree    PTS:", Score2), bg ='White', fg = 'Green', font =("Goudy Stout", 10))
-        lb_P2.place(x=0 , y = 200)
-        
-        lb_P3 = Label(C_Objetivos, text= ("Player 3 Tree    PTS:", Score3), bg ='White', fg = 'Green', font =("Goudy Stout", 10))
-        lb_P3.place(x=0 , y = 400)
-        
-        lb_P4 = Label(C_Objetivos, text= ("Player 4 Tree    PTS:", Score4), bg ='White', fg = 'Green', font =("Goudy Stout", 10))
-        lb_P4.place(x=0 , y = 600)
-        """
-
-
-
-
-
-        
-
-
-
-
-
-        #"BST", AVL", "B", "SPLAY"
-
-
-        #lb_Tree1 = Label(C_Objetivos, text= ("."), bg ='White', fg = 'Green', font =("Goudy Stout", 10))
-        #lb_Tree2 = Label(C_Objetivos, text= ("."), bg ='White', fg = 'Green', font =("Goudy Stout", 10))
-        #lb_Tree3 = Label(C_Objetivos, text= ("."), bg ='White', fg = 'Green', font =("Goudy Stout", 10))
-        #lb_Tree4 = Label(C_Objetivos, text= ("."), bg ='White', fg = 'Green', font =("Goudy Stout", 10))
-        #lb_ObjetivoTime.config(text= ("Tiempo:" , Tiempo, "Build:", Build), bg ='Black', fg = 'Yellow', font =("Goudy Stout", 10), height = 3, width=75)
-        
         def actualizaScorePlayer(Jugador): #Actualiza los árboles de los jugadores cada vez que alguno toma un nodo
             global Score1, Score2, Score3, Score4
             
