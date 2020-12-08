@@ -5,4 +5,3 @@ class Controles:
         self.salto=salto
         self.efecto=efecto
         self.poder=poder
-        
