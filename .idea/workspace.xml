@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="1531f8ce-51f0-4007-ae69-4e641862e1d4" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,9 +63,30 @@
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="tec.proyecto2.server_sockets" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="tec.proyecto2.server_sockets" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Challenges">
+    <configuration name="Challenges" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="tec.proyecto2.server_sockets.Challenges" />
+      <module name="Socket Java" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tec.proyecto2.server_sockets.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Server" />
+      <option name="MAIN_CLASS_NAME" value="tec.proyecto2.server_sockets.Server" />
       <module name="Socket Java" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -69,6 +108,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Server" />
+        <item itemvalue="Application.Challenges" />
       </list>
     </recent_temporary>
   </component>
@@ -82,28 +122,50 @@
       <updated>1607320523343</updated>
       <workItem from="1607320528467" duration="136000" />
       <workItem from="1607373788372" duration="9204000" />
+      <workItem from="1607388212069" duration="5295000" />
+      <workItem from="1607394769254" duration="8342000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="WindowStateProjectService">
-    <state width="1323" height="179" key="GridCell.Tab.0.bottom" timestamp="1607385433902">
+    <state x="413" y="140" key="#com.intellij.ide.util.PackageChooserDialog" timestamp="1607388338422">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="179" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1607385433902" />
-    <state width="1323" height="179" key="GridCell.Tab.0.center" timestamp="1607385433901">
+    <state x="413" y="140" key="#com.intellij.ide.util.PackageChooserDialog/0.0.1366.728@0.0.1366.728" timestamp="1607388338422" />
+    <state x="466" y="254" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1607388340592">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="179" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1607385433901" />
-    <state width="1323" height="179" key="GridCell.Tab.0.left" timestamp="1607385433901">
+    <state x="466" y="254" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1366.728@0.0.1366.728" timestamp="1607388340592" />
+    <state width="1323" height="179" key="GridCell.Tab.0.bottom" timestamp="1607404229225">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="179" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1607385433901" />
-    <state width="1323" height="179" key="GridCell.Tab.0.right" timestamp="1607385433902">
+    <state width="1323" height="179" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1607404229225" />
+    <state width="1323" height="179" key="GridCell.Tab.0.center" timestamp="1607404229224">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="179" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1607385433902" />
+    <state width="1323" height="179" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1607404229224" />
+    <state width="1323" height="179" key="GridCell.Tab.0.left" timestamp="1607404229224">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="179" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1607404229224" />
+    <state width="1323" height="179" key="GridCell.Tab.0.right" timestamp="1607404229225">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="179" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1607404229225" />
   </component>
 </project>
