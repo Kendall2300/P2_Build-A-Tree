@@ -1,0 +1,8 @@
+El objetivo del juego trata de construir un árbol mediante una serie de objetos 
+que caen desde el cielo, los cuales tienen formas diferentes, cada una de acuerdo
+al arbol que el juego solicita que se construya. Los jugadores pueden empujar a los
+demás jugadores para que no agarren el objeto, o bien empujarlos para hacerlos caer 
+y así ganar el juego. El juego se gana de dos maneras, 
+
+- Si el tiempo se acaba, gana el jugador con la mayor puntuación.
+- Si un jugador se cae, quien queda en pie gana.
