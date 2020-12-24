@@ -61,6 +61,9 @@ public class Marco_Servidor extends JFrame implements Runnable {
                     String message = new String(dis.readAllBytes());
                     areatexto.append("\n" + message);
 
+                    /**
+                     * Este condicional se encarga de cerrar el servidor tras la llamada del cliente
+                     */
                     if(message.equals("Exit")){
                         areatexto.append("\n" + "Cerrando el servidor");
                         misocket.close();

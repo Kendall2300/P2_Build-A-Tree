@@ -719,12 +719,18 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
         Img = C_GameOver.create_image(0,0, anchor = NW , image = C_GameOver.Over)
 
         def setPuntuacion():
+            
             WriteScore = open("notes\D_Montoya_Rivera_Scores.txt", 'a')
             WriteScore.write("\n" + Jugador + "\n" + str(Score))
             return
         setPuntuacion()
 
         if Condicion == "Victoria":
+            port = 6000
+            clienteSocket = socket.socket(family=socket.AF_INET,type=socket.SOCK_STREAM)
+            clienteSocket.connect(("localhost",port))
+            recibe = clienteSocket.recv(4096)
+            recibe = repr(recibe)
         
             lb_Fin = Label(C_GameOver, text= ("El tiempo se ha acabado"), bg ='Black', fg = 'Red', font =("Goudy Stout", 13))
             lb_Fin.place(x= 250, y = 10)
@@ -734,8 +740,18 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
             
             lb_SCORE = Label(C_GameOver, text= ("Puntuacion = " + str(Score) + " pts"), bg ='Black', fg = 'Red', font =("Goudy Stout", 13))
             lb_SCORE.place(x=250, y = 100)
+            message = "El tiempo se ha acabado. Winner: " + Jugador + ". Puntuación = " + str(Score)+ " pts"
+            message = str(message)
+            message = clienteSocket.send(message.encode())
+            clienteSocket.close()
             
         else:
+            port = 6000
+            clienteSocket = socket.socket(family=socket.AF_INET,type=socket.SOCK_STREAM)
+            clienteSocket.connect(("localhost",port))
+            recibe = clienteSocket.recv(4096)
+            recibe = repr(recibe)
+            
             lb_Fin = Label(C_GameOver, text= ("Los jugadores se han caído del mapa"), bg ='Black', fg = 'Red', font =("Goudy Stout", 13))
             lb_Fin.place(x=250,y=10)
 
@@ -744,6 +760,11 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
             
             lb_SCORE = Label(C_GameOver, text= ("Puntuacion = " + str(Score) + " pts"), bg ='Black', fg = 'Red', font =("Goudy Stout", 13))
             lb_SCORE.place(x=250, y = 100)
+            
+            message = "Los jugadores se han caído del mapa. Winner: " + Jugador + ". Puntuación = " + str(Score) + " pts"
+            message = str(message)
+            message = clienteSocket.send(message.encode())
+            clienteSocket.close()
 
 
 
@@ -1327,7 +1348,7 @@ class General: #La clase contiene todas las interfaces presentes en el menu, con
                 WindGame.after(1000,lambda:Timer())
                 message = Tiempo
                 message = str(message)
-                message = "El tiempo restante es: " + message
+                message = "El tiempo restante es: " + message + " segundos"
                 message = clienteSocket.send(message.encode())
             clienteSocket.close()
                 
